@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      * {
+        margin: 0px;
+        padding: 0px;
+        font-family: ProximaNova-Regular, "Helvetica Neue", Arial, sans-serif,
+          "Apple Color Emoji", "Segoe UI Emoji";
+      }
+
+      #container {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 15px;
+        width: 80%;
+        margin: 50px auto;
+      }
+      .card {
+        /* border: 1px dashed red; */
+        height: fit-content;
+        /* width: 23%; */
+      }
+      .card > img {
+        width: 100%;
+        height: 50%;
+      }
+      .card > button {
+        width: 80%;
+        color: black;
+        font: 12px sans-serif;
+        word-spacing: 5px;
+        border: 1px solid black;
+        background-color: #fff;
+        padding: 10px 0;
+        margin: 10px 30px;
+      }
+      .tag {
+        font: 10px sans-serif;
+        margin: 10px 10px;
+      }
+      .name {
+        font: 12px sans-serif;
+        margin: 10px 10px;
+      }
+      .strike {
+        text-decoration: line-through;
+        font: 14px sans-serif;
+        margin: 10px 10px;
+      }
+      .price {
+        color: red;
+        font: 14px sans-serif;
+        margin: 10px 10px;
+      }
+      .discount {
+        color: #767676;
+        font: 16px sans-serif;
+        margin: 10px 10px;
+      }
+      .card:hover {
+        box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px,
+          rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="sortingPanel"></div>
+    <div id="container"></div>
+  </body>
+</html>
+<script>
+  var bData = [
+    {
+      img: "https://lmsin.net/cdn-cgi/image/h=1125,w=1125,q=60,fit=cover/https://aaeff43fe32172cbcecc-ae2a4e9a8cbc330ede5588dedf56886e.lmsin.net/lifestyle/1000011346893-Red-Red-1000011346893_01-2100.jpg",
+      price: 449,
+      productName: "FAME FOREVER Boys Printed Short Sleeves T-shirt",
+      discount: 50,
+      size: "s",
+      color: "red",
+    },
+    {
+      img: "https://lmsin.net/cdn-cgi/image/h=1125,w=1125,q=60,fit=cover/https://aaeff43fe32172cbcecc-ae2a4e9a8cbc330ede5588dedf56886e.lmsin.net/lifestyle/1000011346812-White-White-1000011346812_01-2100.jpg",
+      price: 549,
+      productName: "FAME FOREVER Boys Typographic Print Crew Neck T-shirt",
+      discount: 58,
+      size: "s",
+      color: "red",
+    },
+    {
+      img: "https://lmsin.net/cdn-cgi/image/h=1125,w=1125,q=60,fit=cover/https://aaeff43fe32172cbcecc-ae2a4e9a8cbc330ede5588dedf56886e.lmsin.net/lifestyle/1000011197328-Blue-Blue-1000011197328_01-2100.jpg",
+      price: 845,
+      productName: "LEE COOPER JUNIORS Boys Printed Crew Neck T-shirt",
+      discount: 99,
+      size: "s",
+      color: "red",
+    },
+    {
+      img: "https://lmsin.net/cdn-cgi/image/h=1125,w=1125,q=60,fit=cover/https://aaeff43fe32172cbcecc-ae2a4e9a8cbc330ede5588dedf56886e.lmsin.net/lifestyle/1000011407589-Green-Olive-1000011407589_01-2100.jpg",
+      price: 456,
+      productName: "FAME FOREVER Boys Colourblocked Regular Shorts",
+      discount: 75,
+      size: "s",
+      color: "red",
+    },
+    {
+      img: "https://lmsin.net/cdn-cgi/image/h=1125,w=1125,q=60,fit=cover/https://aaeff43fe32172cbcecc-ae2a4e9a8cbc330ede5588dedf56886e.lmsin.net/lifestyle/1000011347248-Black-Black-1000011347248_01-2100.jpg",
+      price: 544,
+      productName: "FAME FOREVER Boys Printed Crew Neck T-shirt",
+      discount: 58,
+      size: "s",
+      color: "red",
+    },
+    {
+      img: "https://lmsin.net/cdn-cgi/image/h=1125,w=1125,q=60,fit=cover/https://aaeff43fe32172cbcecc-ae2a4e9a8cbc330ede5588dedf56886e.lmsin.net/lifestyle/1000011347303-Grey-1000011347303_01-2100.jpg",
+      price: 596,
+      productName: "FAME FOREVER Boys Printed Elasticated Shorts",
+      discount: 58,
+      size: "s",
+      color: "red",
+    },
+    {
+      img: "https://lmsin.net/cdn-cgi/image/h=1125,w=1125,q=60,fit=cover/https://aaeff43fe32172cbcecc-ae2a4e9a8cbc330ede5588dedf56886e.lmsin.net/lifestyle/1000011347105-Green-Olive-1000011347105_01-2100.jpg",
+      price: 456,
+      productName: "FAME FOREVER Boys Printed Crew Neck T-shirt",
+      discount: 78,
+      size: "s",
+      color: "red",
+    },
+    {
+      img: "https://lmsin.net/cdn-cgi/image/h=1125,w=1125,q=60,fit=cover/https://aaeff43fe32172cbcecc-ae2a4e9a8cbc330ede5588dedf56886e.lmsin.net/lifestyle/1000010246232-Blue-Blue-1000010246232_01-2100.jpg",
+      price: 785,
+      productName: "FS MINI KLUB Boys Printed Crew Neck T-shirt",
+      discount: 42,
+      size: "s",
+      color: "red",
+    },
+    {
+      img: "https://lmsin.net/cdn-cgi/image/h=1125,w=1125,q=60,fit=cover/https://aaeff43fe32172cbcecc-ae2a4e9a8cbc330ede5588dedf56886e.lmsin.net/lifestyle/1000011346893-Red-Red-1000011346893_01-2100.jpg",
+      price: 449,
+      productName: "FAME FOREVER Boys Printed Short Sleeves T-shirt",
+      discount: 50,
+      size: "s",
+      color: "red",
+    },
+    {
+      img: "https://lmsin.net/cdn-cgi/image/h=1125,w=1125,q=60,fit=cover/https://aaeff43fe32172cbcecc-ae2a4e9a8cbc330ede5588dedf56886e.lmsin.net/lifestyle/1000011346812-White-White-1000011346812_01-2100.jpg",
+      price: 549,
+      productName: "FAME FOREVER Boys Typographic Print Crew Neck T-shirt",
+      discount: 58,
+      size: "s",
+      color: "red",
+    },
+    {
+      img: "https://lmsin.net/cdn-cgi/image/h=1125,w=1125,q=60,fit=cover/https://aaeff43fe32172cbcecc-ae2a4e9a8cbc330ede5588dedf56886e.lmsin.net/lifestyle/1000011197328-Blue-Blue-1000011197328_01-2100.jpg",
+      price: 845,
+      productName: "LEE COOPER JUNIORS Boys Printed Crew Neck T-shirt",
+      discount: 99,
+      size: "s",
+      color: "red",
+    },
+    {
+      img: "https://lmsin.net/cdn-cgi/image/h=1125,w=1125,q=60,fit=cover/https://aaeff43fe32172cbcecc-ae2a4e9a8cbc330ede5588dedf56886e.lmsin.net/lifestyle/1000011407589-Green-Olive-1000011407589_01-2100.jpg",
+      price: 456,
+      productName: "FAME FOREVER Boys Colourblocked Regular Shorts",
+      discount: 75,
+      size: "s",
+      color: "red",
+    },
+    {
+      img: "https://lmsin.net/cdn-cgi/image/h=1125,w=1125,q=60,fit=cover/https://aaeff43fe32172cbcecc-ae2a4e9a8cbc330ede5588dedf56886e.lmsin.net/lifestyle/1000011347248-Black-Black-1000011347248_01-2100.jpg",
+      price: 544,
+      productName: "FAME FOREVER Boys Printed Crew Neck T-shirt",
+      discount: 58,
+      size: "s",
+      color: "red",
+    },
+    {
+      img: "https://lmsin.net/cdn-cgi/image/h=1125,w=1125,q=60,fit=cover/https://aaeff43fe32172cbcecc-ae2a4e9a8cbc330ede5588dedf56886e.lmsin.net/lifestyle/1000011347303-Grey-1000011347303_01-2100.jpg",
+      price: 596,
+      productName: "FAME FOREVER Boys Printed Elasticated Shorts",
+      discount: 58,
+      size: "s",
+      color: "red",
+    },
+    {
+      img: "https://lmsin.net/cdn-cgi/image/h=1125,w=1125,q=60,fit=cover/https://aaeff43fe32172cbcecc-ae2a4e9a8cbc330ede5588dedf56886e.lmsin.net/lifestyle/1000011347105-Green-Olive-1000011347105_01-2100.jpg",
+      price: 456,
+      productName: "FAME FOREVER Boys Printed Crew Neck T-shirt",
+      discount: 78,
+      size: "s",
+      color: "red",
+    },
+    {
+      img: "https://lmsin.net/cdn-cgi/image/h=1125,w=1125,q=60,fit=cover/https://aaeff43fe32172cbcecc-ae2a4e9a8cbc330ede5588dedf56886e.lmsin.net/lifestyle/1000010246232-Blue-Blue-1000010246232_01-2100.jpg",
+      price: 785,
+      productName: "FS MINI KLUB Boys Printed Crew Neck T-shirt",
+      discount: 42,
+      size: "s",
+      color: "red",
+    },
+    {
+      img: "https://lmsin.net/cdn-cgi/image/h=1125,w=1125,q=60,fit=cover/https://aaeff43fe32172cbcecc-ae2a4e9a8cbc330ede5588dedf56886e.lmsin.net/lifestyle/1000011346893-Red-Red-1000011346893_01-2100.jpg",
+      price: 449,
+      productName: "FAME FOREVER Boys Printed Short Sleeves T-shirt",
+      discount: 50,
+      size: "s",
+      color: "red",
+    },
+    {
+      img: "https://lmsin.net/cdn-cgi/image/h=1125,w=1125,q=60,fit=cover/https://aaeff43fe32172cbcecc-ae2a4e9a8cbc330ede5588dedf56886e.lmsin.net/lifestyle/1000011346812-White-White-1000011346812_01-2100.jpg",
+      price: 549,
+      productName: "FAME FOREVER Boys Typographic Print Crew Neck T-shirt",
+      discount: 58,
+      size: "s",
+      color: "red",
+    },
+    {
+      img: "https://lmsin.net/cdn-cgi/image/h=1125,w=1125,q=60,fit=cover/https://aaeff43fe32172cbcecc-ae2a4e9a8cbc330ede5588dedf56886e.lmsin.net/lifestyle/1000011197328-Blue-Blue-1000011197328_01-2100.jpg",
+      price: 845,
+      productName: "LEE COOPER JUNIORS Boys Printed Crew Neck T-shirt",
+      discount: 99,
+      size: "s",
+      color: "red",
+    },
+    {
+      img: "https://lmsin.net/cdn-cgi/image/h=1125,w=1125,q=60,fit=cover/https://aaeff43fe32172cbcecc-ae2a4e9a8cbc330ede5588dedf56886e.lmsin.net/lifestyle/1000011407589-Green-Olive-1000011407589_01-2100.jpg",
+      price: 456,
+      productName: "FAME FOREVER Boys Colourblocked Regular Shorts",
+      discount: 75,
+      size: "s",
+      color: "red",
+    },
+    {
+      img: "https://lmsin.net/cdn-cgi/image/h=1125,w=1125,q=60,fit=cover/https://aaeff43fe32172cbcecc-ae2a4e9a8cbc330ede5588dedf56886e.lmsin.net/lifestyle/1000011347248-Black-Black-1000011347248_01-2100.jpg",
+      price: 544,
+      productName: "FAME FOREVER Boys Printed Crew Neck T-shirt",
+      discount: 58,
+      size: "s",
+      color: "red",
+    },
+    {
+      img: "https://lmsin.net/cdn-cgi/image/h=1125,w=1125,q=60,fit=cover/https://aaeff43fe32172cbcecc-ae2a4e9a8cbc330ede5588dedf56886e.lmsin.net/lifestyle/1000011347303-Grey-1000011347303_01-2100.jpg",
+      price: 596,
+      productName: "FAME FOREVER Boys Printed Elasticated Shorts",
+      discount: 58,
+      size: "s",
+      color: "red",
+    },
+    {
+      img: "https://lmsin.net/cdn-cgi/image/h=1125,w=1125,q=60,fit=cover/https://aaeff43fe32172cbcecc-ae2a4e9a8cbc330ede5588dedf56886e.lmsin.net/lifestyle/1000011347105-Green-Olive-1000011347105_01-2100.jpg",
+      price: 456,
+      productName: "FAME FOREVER Boys Printed Crew Neck T-shirt",
+      discount: 78,
+      size: "s",
+      color: "red",
+    },
+    {
+      img: "https://lmsin.net/cdn-cgi/image/h=1125,w=1125,q=60,fit=cover/https://aaeff43fe32172cbcecc-ae2a4e9a8cbc330ede5588dedf56886e.lmsin.net/lifestyle/1000010246232-Blue-Blue-1000010246232_01-2100.jpg",
+      price: 785,
+      productName: "FS MINI KLUB Boys Printed Crew Neck T-shirt",
+      discount: 42,
+      size: "s",
+      color: "red",
+    },
+    {
+      img: "https://lmsin.net/cdn-cgi/image/h=1125,w=1125,q=60,fit=cover/https://aaeff43fe32172cbcecc-ae2a4e9a8cbc330ede5588dedf56886e.lmsin.net/lifestyle/1000011346893-Red-Red-1000011346893_01-2100.jpg",
+      price: 449,
+      productName: "FAME FOREVER Boys Printed Short Sleeves T-shirt",
+      discount: 50,
+      size: "s",
+      color: "red",
+    },
+    {
+      img: "https://lmsin.net/cdn-cgi/image/h=1125,w=1125,q=60,fit=cover/https://aaeff43fe32172cbcecc-ae2a4e9a8cbc330ede5588dedf56886e.lmsin.net/lifestyle/1000011346812-White-White-1000011346812_01-2100.jpg",
+      price: 549,
+      productName: "FAME FOREVER Boys Typographic Print Crew Neck T-shirt",
+      discount: 58,
+      size: "s",
+      color: "red",
+    },
+    {
+      img: "https://lmsin.net/cdn-cgi/image/h=1125,w=1125,q=60,fit=cover/https://aaeff43fe32172cbcecc-ae2a4e9a8cbc330ede5588dedf56886e.lmsin.net/lifestyle/1000011197328-Blue-Blue-1000011197328_01-2100.jpg",
+      price: 845,
+      productName: "LEE COOPER JUNIORS Boys Printed Crew Neck T-shirt",
+      discount: 99,
+      size: "s",
+      color: "red",
+    },
+    {
+      img: "https://lmsin.net/cdn-cgi/image/h=1125,w=1125,q=60,fit=cover/https://aaeff43fe32172cbcecc-ae2a4e9a8cbc330ede5588dedf56886e.lmsin.net/lifestyle/1000011407589-Green-Olive-1000011407589_01-2100.jpg",
+      price: 456,
+      productName: "FAME FOREVER Boys Colourblocked Regular Shorts",
+      discount: 75,
+      size: "s",
+      color: "red",
+    },
+    {
+      img: "https://lmsin.net/cdn-cgi/image/h=1125,w=1125,q=60,fit=cover/https://aaeff43fe32172cbcecc-ae2a4e9a8cbc330ede5588dedf56886e.lmsin.net/lifestyle/1000011347248-Black-Black-1000011347248_01-2100.jpg",
+      price: 544,
+      productName: "FAME FOREVER Boys Printed Crew Neck T-shirt",
+      discount: 58,
+      size: "s",
+      color: "red",
+    },
+    {
+      img: "https://lmsin.net/cdn-cgi/image/h=1125,w=1125,q=60,fit=cover/https://aaeff43fe32172cbcecc-ae2a4e9a8cbc330ede5588dedf56886e.lmsin.net/lifestyle/1000011347303-Grey-1000011347303_01-2100.jpg",
+      price: 596,
+      productName: "FAME FOREVER Boys Printed Elasticated Shorts",
+      discount: 58,
+      size: "s",
+      color: "red",
+    },
+    {
+      img: "https://lmsin.net/cdn-cgi/image/h=1125,w=1125,q=60,fit=cover/https://aaeff43fe32172cbcecc-ae2a4e9a8cbc330ede5588dedf56886e.lmsin.net/lifestyle/1000011347105-Green-Olive-1000011347105_01-2100.jpg",
+      price: 456,
+      productName: "FAME FOREVER Boys Printed Crew Neck T-shirt",
+      discount: 78,
+      size: "s",
+      color: "red",
+    },
+    {
+      img: "https://lmsin.net/cdn-cgi/image/h=1125,w=1125,q=60,fit=cover/https://aaeff43fe32172cbcecc-ae2a4e9a8cbc330ede5588dedf56886e.lmsin.net/lifestyle/1000010246232-Blue-Blue-1000010246232_01-2100.jpg",
+      price: 785,
+      productName: "FS MINI KLUB Boys Printed Crew Neck T-shirt",
+      discount: 42,
+      size: "s",
+      color: "red",
+    },
+    {
+      img: "https://lmsin.net/cdn-cgi/image/h=1125,w=1125,q=60,fit=cover/https://aaeff43fe32172cbcecc-ae2a4e9a8cbc330ede5588dedf56886e.lmsin.net/lifestyle/1000011346893-Red-Red-1000011346893_01-2100.jpg",
+      price: 449,
+      productName: "FAME FOREVER Boys Printed Short Sleeves T-shirt",
+      discount: 50,
+      size: "s",
+      color: "red",
+    },
+    {
+      img: "https://lmsin.net/cdn-cgi/image/h=1125,w=1125,q=60,fit=cover/https://aaeff43fe32172cbcecc-ae2a4e9a8cbc330ede5588dedf56886e.lmsin.net/lifestyle/1000011346812-White-White-1000011346812_01-2100.jpg",
+      price: 549,
+      productName: "FAME FOREVER Boys Typographic Print Crew Neck T-shirt",
+      discount: 58,
+      size: "s",
+      color: "red",
+    },
+    {
+      img: "https://lmsin.net/cdn-cgi/image/h=1125,w=1125,q=60,fit=cover/https://aaeff43fe32172cbcecc-ae2a4e9a8cbc330ede5588dedf56886e.lmsin.net/lifestyle/1000011197328-Blue-Blue-1000011197328_01-2100.jpg",
+      price: 845,
+      productName: "LEE COOPER JUNIORS Boys Printed Crew Neck T-shirt",
+      discount: 99,
+      size: "s",
+      color: "red",
+    },
+    {
+      img: "https://lmsin.net/cdn-cgi/image/h=1125,w=1125,q=60,fit=cover/https://aaeff43fe32172cbcecc-ae2a4e9a8cbc330ede5588dedf56886e.lmsin.net/lifestyle/1000011407589-Green-Olive-1000011407589_01-2100.jpg",
+      price: 456,
+      productName: "FAME FOREVER Boys Colourblocked Regular Shorts",
+      discount: 75,
+      size: "s",
+      color: "red",
+    },
+    {
+      img: "https://lmsin.net/cdn-cgi/image/h=1125,w=1125,q=60,fit=cover/https://aaeff43fe32172cbcecc-ae2a4e9a8cbc330ede5588dedf56886e.lmsin.net/lifestyle/1000011347248-Black-Black-1000011347248_01-2100.jpg",
+      price: 544,
+      productName: "FAME FOREVER Boys Printed Crew Neck T-shirt",
+      discount: 58,
+      size: "s",
+      color: "red",
+    },
+    {
+      img: "https://lmsin.net/cdn-cgi/image/h=1125,w=1125,q=60,fit=cover/https://aaeff43fe32172cbcecc-ae2a4e9a8cbc330ede5588dedf56886e.lmsin.net/lifestyle/1000011347303-Grey-1000011347303_01-2100.jpg",
+      price: 596,
+      productName: "FAME FOREVER Boys Printed Elasticated Shorts",
+      discount: 58,
+      size: "s",
+      color: "red",
+    },
+    {
+      img: "https://lmsin.net/cdn-cgi/image/h=1125,w=1125,q=60,fit=cover/https://aaeff43fe32172cbcecc-ae2a4e9a8cbc330ede5588dedf56886e.lmsin.net/lifestyle/1000011347105-Green-Olive-1000011347105_01-2100.jpg",
+      price: 456,
+      productName: "FAME FOREVER Boys Printed Crew Neck T-shirt",
+      discount: 78,
+      size: "s",
+      color: "red",
+    },
+    {
+      img: "https://lmsin.net/cdn-cgi/image/h=1125,w=1125,q=60,fit=cover/https://aaeff43fe32172cbcecc-ae2a4e9a8cbc330ede5588dedf56886e.lmsin.net/lifestyle/1000010246232-Blue-Blue-1000010246232_01-2100.jpg",
+      price: 785,
+      productName: "FS MINI KLUB Boys Printed Crew Neck T-shirt",
+      discount: 42,
+      size: "s",
+      color: "red",
+    },
+    {
+      img: "https://lmsin.net/cdn-cgi/image/h=1125,w=1125,q=60,fit=cover/https://aaeff43fe32172cbcecc-ae2a4e9a8cbc330ede5588dedf56886e.lmsin.net/lifestyle/1000011346893-Red-Red-1000011346893_01-2100.jpg",
+      price: 449,
+      productName: "FAME FOREVER Boys Printed Short Sleeves T-shirt",
+      discount: 50,
+      size: "s",
+      color: "red",
+    },
+    {
+      img: "https://lmsin.net/cdn-cgi/image/h=1125,w=1125,q=60,fit=cover/https://aaeff43fe32172cbcecc-ae2a4e9a8cbc330ede5588dedf56886e.lmsin.net/lifestyle/1000011346812-White-White-1000011346812_01-2100.jpg",
+      price: 549,
+      productName: "FAME FOREVER Boys Typographic Print Crew Neck T-shirt",
+      discount: 58,
+      size: "s",
+      color: "red",
+    },
+    {
+      img: "https://lmsin.net/cdn-cgi/image/h=1125,w=1125,q=60,fit=cover/https://aaeff43fe32172cbcecc-ae2a4e9a8cbc330ede5588dedf56886e.lmsin.net/lifestyle/1000011197328-Blue-Blue-1000011197328_01-2100.jpg",
+      price: 845,
+      productName: "LEE COOPER JUNIORS Boys Printed Crew Neck T-shirt",
+      discount: 99,
+      size: "s",
+      color: "red",
+    },
+    {
+      img: "https://lmsin.net/cdn-cgi/image/h=1125,w=1125,q=60,fit=cover/https://aaeff43fe32172cbcecc-ae2a4e9a8cbc330ede5588dedf56886e.lmsin.net/lifestyle/1000011407589-Green-Olive-1000011407589_01-2100.jpg",
+      price: 456,
+      productName: "FAME FOREVER Boys Colourblocked Regular Shorts",
+      discount: 75,
+      size: "s",
+      color: "red",
+    },
+    {
+      img: "https://lmsin.net/cdn-cgi/image/h=1125,w=1125,q=60,fit=cover/https://aaeff43fe32172cbcecc-ae2a4e9a8cbc330ede5588dedf56886e.lmsin.net/lifestyle/1000011347248-Black-Black-1000011347248_01-2100.jpg",
+      price: 544,
+      productName: "FAME FOREVER Boys Printed Crew Neck T-shirt",
+      discount: 58,
+      size: "s",
+      color: "red",
+    },
+    {
+      img: "https://lmsin.net/cdn-cgi/image/h=1125,w=1125,q=60,fit=cover/https://aaeff43fe32172cbcecc-ae2a4e9a8cbc330ede5588dedf56886e.lmsin.net/lifestyle/1000011347303-Grey-1000011347303_01-2100.jpg",
+      price: 596,
+      productName: "FAME FOREVER Boys Printed Elasticated Shorts",
+      discount: 58,
+      size: "s",
+      color: "red",
+    },
+    {
+      img: "https://lmsin.net/cdn-cgi/image/h=1125,w=1125,q=60,fit=cover/https://aaeff43fe32172cbcecc-ae2a4e9a8cbc330ede5588dedf56886e.lmsin.net/lifestyle/1000011347105-Green-Olive-1000011347105_01-2100.jpg",
+      price: 456,
+      productName: "FAME FOREVER Boys Printed Crew Neck T-shirt",
+      discount: 78,
+      size: "s",
+      color: "red",
+    },
+    {
+      img: "https://lmsin.net/cdn-cgi/image/h=1125,w=1125,q=60,fit=cover/https://aaeff43fe32172cbcecc-ae2a4e9a8cbc330ede5588dedf56886e.lmsin.net/lifestyle/1000010246232-Blue-Blue-1000010246232_01-2100.jpg",
+      price: 785,
+      productName: "FS MINI KLUB Boys Printed Crew Neck T-shirt",
+      discount: 42,
+      size: "s",
+      color: "red",
+    },
+  ];
+
+  var basketArr = JSON.parse(localStorage.getItem("basket")) || [];
+  var container = document.getElementById("container");
+  function append(data) {
+    data.forEach(function (el) {
+      let card = document.createElement("div");
+      card.setAttribute("class", "card");
+      let image = document.createElement("img");
+      image.src = el.img;
+      let btn = document.createElement("button");
+      btn.innerText = "QUICK SHOP";
+      let tag = document.createElement("p");
+      tag.setAttribute("class", "tag");
+      tag.innerText = "BEST SELLER";
+      let name = document.createElement("p");
+      name.setAttribute("class", "name");
+      name.innerText = el.productName;
+      let strikePrice = document.createElement("span");
+      strikePrice.innerText = "INR 11,688";
+      strikePrice.setAttribute("class", "strike");
+
+      let price = document.createElement("span");
+      price.innerText = `INR${el.price}`;
+      price.setAttribute("class", "price");
+
+      let discount = document.createElement("p");
+      discount.innerText = "(34% Off)";
+      discount.setAttribute("class", "discount");
+      let cartButton = document.createElement("button");
+      cartButton.innerText = "ADD TO CART";
+      cartButton.setAttribute("class", "cart");
+
+      card.append(
+        image,
+        btn,
+        tag,
+        name,
+        strikePrice,
+        price,
+        discount,
+        cartButton
+      );
+      container.append(card);
+    });
+  }
+  append(bData);
+</script>

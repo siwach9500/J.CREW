@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Signup</title>
+    <style>
+        *{
+            margin: 0px;
+            padding: 0px;
+            box-sizing: border-box;
+        }
+        body{
+            background-color: bisque;
+        }
+        body>div{
+            background-color: white;
+            width: 350px;
+            height: 550px;
+            margin: auto;
+            padding-top: 0.5px;
+            margin-top: 30px;
+        }
+        #heading{
+            margin-top: 30px;
+        }
+        input,button,select{
+            width: 95%;
+            display: block;
+            margin: 10px;
+            font-size: 15px;
+            padding-top: 10px;
+            padding-bottom: 10px;
+            margin-top: 15px;
+        }
+        button{
+            background-color: black;
+            color: white;
+            font-size: 15px;
+            font-weight: 10px;
+            padding-top: 10px;
+            padding-bottom: 10px;
+        }
+        body>div>div{
+            margin-top: 20px;
+            margin-bottom: 25px;
+            font-size: larger;
+            /* border: 1px solid red; */
+            text-align: center;
+        }
+        #alreadyAcc{
+            margin: auto;
+            margin-top: 30px;
+            margin-bottom: 30px;
+        }
+        #alreadyAcc>a{
+            text-decoration: none;
+            margin-left: 8px;
+        }
+        p{
+            color:rgb(157, 154, 154);
+            font-size: 14px;
+            margin-bottom: 40px;
+            margin-top: 20px;
+            width: 90%;
+            margin-left: 15px;
+        }
+    </style>
+    
+</head>
+<body>
+    <div>
+        <div id="heading"><b>Sign Up</b></div>
+        <form>
+            
+            <input id="email" type="email" placeholder="Email Address*">
+            <input id="password" type="password" placeholder="Create Password*">
+            <select name="country" id="country">
+                <option value="India">India</option>
+                <option value="America">America</option>
+                <option value="Australia">Australia</option>
+                <option value="England">England</option>
+                <option value="Canada">Canada</option>
+                <option value="New Zealand">New Zealand</option>
+                <option value="Germany">Germany</option>
+                <option value="Scotland">Scotland</option>
+                <option value="Iceland">Iceland</option>
+                <option value="Japan">Japan</option>
+                <option value="Russia">Russia</option>
+            </select>
+            <button>CREATE AN ACCOUNT</button>
+        </form>
+        <p>By clicking "Create an Account", you agree to our Terms of Use and Privacy Policy, including the Use of Cookies and the transfer of your personal information to the United States, a jurisdiction that may not provide an equivalent level of data protection to the laws in your home country.</p>
+        <hr>
+        <div id="alreadyAcc">
+        <b>Already have an account?</b>
+        <a href="signin.html">Sign In</a>
+        </div>
+    </div>
+</body>
+</html>
+<script>
+    let form=document.querySelector("form");
+    let userData=JSON.parse(localStorage.getItem("userdata")) || [];
+    form.addEventListener("submit",function(event){
+        event.preventDefault();
+        var data={
+            email:form.email.value,
+            password:form.password.value,
+            country:form.country.value,
+        }
+        if(checkEmails(data.email)===true){
+            userData.push(data);
+            localStorage.setItem("userData",
+            JSON.stringify(userData));
+        }
+        else{
+            alert("Account Already Exists");
+        }
+    })
+
+    function checkEmails(email){
+        let filtered=userData.filter(function(element){
+            return email === element.email;
+        })
+        if(filtered.length>0){
+            return false;
+        }
+        else{
+            return true;
+        }
+    }
+</script>

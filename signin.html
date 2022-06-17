@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign In</title>
+    <style>
+        *{
+            margin: 0px;
+            padding: 0px;
+            box-sizing: border-box;
+        }
+        body{
+            background-color: bisque;
+        }
+        body>div{
+            background-color: white;
+            width: 350px;
+            height: 550px;
+            margin: auto;
+            padding-top: 0.5px;
+            margin-top: 30px;
+        }
+        #heading{
+            margin-top: 30px;
+        }
+        input,button,select{
+            width: 95%;
+            display: block;
+            margin: 10px;
+            font-size: 15px;
+            padding-top: 10px;
+            padding-bottom: 10px;
+            margin-top: 15px;
+        }
+        button{
+            background-color: black;
+            color: white;
+            font-size: 15px;
+            font-weight: 10px;
+            padding-top: 10px;
+            padding-bottom: 10px;
+        }
+        body>div>div{
+            margin-top: 20px;
+            margin-bottom: 25px;
+            font-size: larger;
+            /* border: 1px solid red; */
+            text-align: center;
+        }
+        #alreadyAcc{
+            margin: auto;
+            margin-top: 30px;
+            margin-bottom: 30px;
+        }
+        #alreadyAcc>a{
+            text-decoration: none;
+            margin-left: 8px;
+        }
+        p{
+            color:rgb(157, 154, 154);
+            font-size: 14px;
+            margin-bottom: 40px;
+            margin-top: 20px;
+            width: 90%;
+            margin-left: 15px;
+        }
+    </style>
+</head>
+ 
+<body>
+    <div>
+        <div id="heading"><b>Sign In</b></div>
+        <form>
+            
+            <input id="email" type="email" placeholder="Email Address*">
+            <input id="password" type="password" placeholder="Create Password*">
+           
+            <button>SIGN IN</button>
+        </form>
+        <p>This site is protected by reCAPTCHA and the Google Privacy Policy and Terms of Service apply.</p>
+        <hr>
+        <div id="alreadyAcc">
+        <b>Don't have an account?</b>
+        <a href="signup.html">Sign Up Now</a>
+        </div>
+    </div>
+</body>
+</html>
+<script>
+    let form=document.querySelector("form");
+
+    let userData=JSON.parse(localStorage.getItem("userData")) || [];
+    
+    form.addEventListener("submit",function(elem){
+        elem.preventDefault()
+        let data={
+            email:form.email.value,
+            password:form.password.value,
+        }
+        if(checkSignin(data.email,data.password)===true){
+            localStorage.setItem("signin",JSON.stringify(data));
+            alert("Sign in Successfull");
+            window.location.href="index.html";
+        }
+        else{
+            alert("Wrong Username or Password");
+        }
+    })
+    function checkSignin(email,password){
+        let filtered =userData.filter(function(elem){
+            return elem.email === email 
+            && elem.password === password;
+        })
+        if(filtered.length>0){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+</script>

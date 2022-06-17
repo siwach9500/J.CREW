@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      * {
+        margin: 0px;
+        padding: 0px;
+        font-family: ProximaNova-Regular, "Helvetica Neue", Arial, sans-serif,
+          "Apple Color Emoji", "Segoe UI Emoji";
+      }
+
+      #container {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 15px;
+        width: 80%;
+        margin: 50px auto;
+      }
+      .card {
+        /* border: 1px dashed red; */
+        height: fit-content;
+        /* width: 23%; */
+      }
+      .card > img {
+        width: 100%;
+        height: 50%;
+      }
+      .card > button {
+        width: 80%;
+        color: black;
+        font: 12px sans-serif;
+        word-spacing: 5px;
+        border: 1px solid black;
+        background-color: #fff;
+        padding: 10px 0;
+        margin: 10px 30px;
+      }
+      .tag {
+        font: 10px sans-serif;
+        margin: 10px 10px;
+      }
+      .name {
+        font: 12px sans-serif;
+        margin: 10px 10px;
+      }
+      .strike {
+        text-decoration: line-through;
+        font: 14px sans-serif;
+        margin: 10px 10px;
+      }
+      .price {
+        color: red;
+        font: 14px sans-serif;
+        margin: 10px 10px;
+      }
+      .discount {
+        color: #767676;
+        font: 16px sans-serif;
+        margin: 10px 10px;
+      }
+      .card:hover {
+        box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px,
+          rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="sortingPanel"></div>
+    <div id="container"></div>
+  </body>
+</html>
+<script>
+  //
+  var data = [
+    {
+      img: "https://lmsin.net/cdn-cgi/image/h=831,w=615,q=60,fit=cover/https://aaeff43fe32172cbcecc-ae2a4e9a8cbc330ede5588dedf56886e.lmsin.net/lifestyle/1000010640156-Green-1000010640156_01-2100.jpg",
+      price: 449,
+      productName: "PEPE JEANS Men Checked Regular Fit Casual Shirt",
+      discount: 50,
+      size: "s",
+      color: "red",
+    },
+    {
+      img: "https://lmsin.net/cdn-cgi/image/h=831,w=615,q=60,fit=cover/https://aaeff43fe32172cbcecc-ae2a4e9a8cbc330ede5588dedf56886e.lmsin.net/lifestyle/1000010653014-Black-1000010653014_01-2100.jpg",
+      price: 549,
+      productName: "PUMA Men Printed Regular Fit Crew Neck T-shirt",
+      discount: 58,
+      size: "s",
+      color: "red",
+    },
+    {
+      img: "https://lmsin.net/cdn-cgi/image/h=831,w=615,q=60,fit=cover/https://aaeff43fe32172cbcecc-ae2a4e9a8cbc330ede5588dedf56886e.lmsin.net/lifestyle/1000010229703-White-White-1000010229703_01-2100.jpg",
+      price: 845,
+      productName:
+        " INDIAN TERRAIN Men Printed Full Sleeves Slim Fit Casual Shirt",
+      discount: 99,
+      size: "s",
+      color: "red",
+    },
+    {
+      img: "https://lmsin.net/cdn-cgi/image/h=831,w=615,q=60,fit=cover/https://aaeff43fe32172cbcecc-ae2a4e9a8cbc330ede5588dedf56886e.lmsin.net/lifestyle/1000010928117-White-White-1000010928117_01-2100.jpg",
+      price: 456,
+      productName: "FREE AUTHORITY Men Printed Crew Neck T-shirt",
+      discount: 75,
+      size: "s",
+      color: "red",
+    },
+    {
+      img: "https://lmsin.net/cdn-cgi/image/h=831,w=615,q=60,fit=cover/https://aaeff43fe32172cbcecc-ae2a4e9a8cbc330ede5588dedf56886e.lmsin.net/lifestyle/1000008301238-Var7-Honey-1000008301238-Var7_02-2100.jpg",
+      price: 544,
+      productName: "FAHRENHEIT Solid Slim Fit Crew Neck T-shirts - Pack of 3",
+      discount: 58,
+      size: "s",
+      color: "red",
+    },
+    {
+      img: "https://lmsin.net/cdn-cgi/image/h=831,w=615,q=60,fit=cover/https://aaeff43fe32172cbcecc-ae2a4e9a8cbc330ede5588dedf56886e.lmsin.net/lifestyle/1000010259935-Yellow-Mustard-1000010259935_01-2100.jpg",
+      price: 596,
+      productName: "U.S. POLO ASSN. Men Solid Regular Fit Polo T-shirt",
+      discount: 58,
+      size: "s",
+      color: "red",
+    },
+    {
+      img: "https://lmsin.net/cdn-cgi/image/h=831,w=615,q=60,fit=cover/https://aaeff43fe32172cbcecc-ae2a4e9a8cbc330ede5588dedf56886e.lmsin.net/lifestyle/1000010434389-White-1000010434389_01-2100.jpg",
+      price: 456,
+      productName: "CODE Men Textured Regular Fit Formal Shirt",
+      discount: 78,
+      size: "s",
+      color: "red",
+    },
+    {
+      img: "https://lmsin.net/cdn-cgi/image/h=831,w=615,q=60,fit=cover/https://aaeff43fe32172cbcecc-ae2a4e9a8cbc330ede5588dedf56886e.lmsin.net/lifestyle/1000011195536-Yellow-Yellow-1000011195536_01-2100.jpg",
+      price: 785,
+      productName: "FAME FOREVER Men Striped Polo T-shirt",
+      discount: 42,
+      size: "s",
+      color: "red",
+    },
+    {
+      img: "https://lmsin.net/cdn-cgi/image/h=831,w=615,q=60,fit=cover/https://aaeff43fe32172cbcecc-ae2a4e9a8cbc330ede5588dedf56886e.lmsin.net/lifestyle/1000010640156-Green-1000010640156_01-2100.jpg",
+      price: 449,
+      productName: "PEPE JEANS Men Checked Regular Fit Casual Shirt",
+      discount: 50,
+      size: "s",
+      color: "red",
+    },
+    {
+      img: "https://lmsin.net/cdn-cgi/image/h=831,w=615,q=60,fit=cover/https://aaeff43fe32172cbcecc-ae2a4e9a8cbc330ede5588dedf56886e.lmsin.net/lifestyle/1000010653014-Black-1000010653014_01-2100.jpg",
+      price: 549,
+      productName: "PUMA Men Printed Regular Fit Crew Neck T-shirt",
+      discount: 58,
+      size: "s",
+      color: "red",
+    },
+    {
+      img: "https://lmsin.net/cdn-cgi/image/h=831,w=615,q=60,fit=cover/https://aaeff43fe32172cbcecc-ae2a4e9a8cbc330ede5588dedf56886e.lmsin.net/lifestyle/1000010229703-White-White-1000010229703_01-2100.jpg",
+      price: 845,
+      productName:
+        " INDIAN TERRAIN Men Printed Full Sleeves Slim Fit Casual Shirt",
+      discount: 99,
+      size: "s",
+      color: "red",
+    },
+    {
+      img: "https://lmsin.net/cdn-cgi/image/h=831,w=615,q=60,fit=cover/https://aaeff43fe32172cbcecc-ae2a4e9a8cbc330ede5588dedf56886e.lmsin.net/lifestyle/1000010928117-White-White-1000010928117_01-2100.jpg",
+      price: 456,
+      productName: "FREE AUTHORITY Men Printed Crew Neck T-shirt",
+      discount: 75,
+      size: "s",
+      color: "red",
+    },
+    {
+      img: "https://lmsin.net/cdn-cgi/image/h=831,w=615,q=60,fit=cover/https://aaeff43fe32172cbcecc-ae2a4e9a8cbc330ede5588dedf56886e.lmsin.net/lifestyle/1000008301238-Var7-Honey-1000008301238-Var7_02-2100.jpg",
+      price: 544,
+      productName: "FAHRENHEIT Solid Slim Fit Crew Neck T-shirts - Pack of 3",
+      discount: 58,
+      size: "s",
+      color: "red",
+    },
+    {
+      img: "https://lmsin.net/cdn-cgi/image/h=831,w=615,q=60,fit=cover/https://aaeff43fe32172cbcecc-ae2a4e9a8cbc330ede5588dedf56886e.lmsin.net/lifestyle/1000010259935-Yellow-Mustard-1000010259935_01-2100.jpg",
+      price: 596,
+      productName: "U.S. POLO ASSN. Men Solid Regular Fit Polo T-shirt",
+      discount: 58,
+      size: "s",
+      color: "red",
+    },
+    {
+      img: "https://lmsin.net/cdn-cgi/image/h=831,w=615,q=60,fit=cover/https://aaeff43fe32172cbcecc-ae2a4e9a8cbc330ede5588dedf56886e.lmsin.net/lifestyle/1000010434389-White-1000010434389_01-2100.jpg",
+      price: 456,
+      productName: "CODE Men Textured Regular Fit Formal Shirt",
+      discount: 78,
+      size: "s",
+      color: "red",
+    },
+    {
+      img: "https://lmsin.net/cdn-cgi/image/h=831,w=615,q=60,fit=cover/https://aaeff43fe32172cbcecc-ae2a4e9a8cbc330ede5588dedf56886e.lmsin.net/lifestyle/1000011195536-Yellow-Yellow-1000011195536_01-2100.jpg",
+      price: 785,
+      productName: "FAME FOREVER Men Striped Polo T-shirt",
+      discount: 42,
+      size: "s",
+      color: "red",
+    },
+    {
+      img: "https://lmsin.net/cdn-cgi/image/h=831,w=615,q=60,fit=cover/https://aaeff43fe32172cbcecc-ae2a4e9a8cbc330ede5588dedf56886e.lmsin.net/lifestyle/1000010640156-Green-1000010640156_01-2100.jpg",
+      price: 449,
+      productName: "PEPE JEANS Men Checked Regular Fit Casual Shirt",
+      discount: 50,
+      size: "s",
+      color: "red",
+    },
+    {
+      img: "https://lmsin.net/cdn-cgi/image/h=831,w=615,q=60,fit=cover/https://aaeff43fe32172cbcecc-ae2a4e9a8cbc330ede5588dedf56886e.lmsin.net/lifestyle/1000010653014-Black-1000010653014_01-2100.jpg",
+      price: 549,
+      productName: "PUMA Men Printed Regular Fit Crew Neck T-shirt",
+      discount: 58,
+      size: "s",
+      color: "red",
+    },
+    {
+      img: "https://lmsin.net/cdn-cgi/image/h=831,w=615,q=60,fit=cover/https://aaeff43fe32172cbcecc-ae2a4e9a8cbc330ede5588dedf56886e.lmsin.net/lifestyle/1000010229703-White-White-1000010229703_01-2100.jpg",
+      price: 845,
+      productName:
+        " INDIAN TERRAIN Men Printed Full Sleeves Slim Fit Casual Shirt",
+      discount: 99,
+      size: "s",
+      color: "red",
+    },
+    {
+      img: "https://lmsin.net/cdn-cgi/image/h=831,w=615,q=60,fit=cover/https://aaeff43fe32172cbcecc-ae2a4e9a8cbc330ede5588dedf56886e.lmsin.net/lifestyle/1000010928117-White-White-1000010928117_01-2100.jpg",
+      price: 456,
+      productName: "FREE AUTHORITY Men Printed Crew Neck T-shirt",
+      discount: 75,
+      size: "s",
+      color: "red",
+    },
+    {
+      img: "https://lmsin.net/cdn-cgi/image/h=831,w=615,q=60,fit=cover/https://aaeff43fe32172cbcecc-ae2a4e9a8cbc330ede5588dedf56886e.lmsin.net/lifestyle/1000008301238-Var7-Honey-1000008301238-Var7_02-2100.jpg",
+      price: 544,
+      productName: "FAHRENHEIT Solid Slim Fit Crew Neck T-shirts - Pack of 3",
+      discount: 58,
+      size: "s",
+      color: "red",
+    },
+    {
+      img: "https://lmsin.net/cdn-cgi/image/h=831,w=615,q=60,fit=cover/https://aaeff43fe32172cbcecc-ae2a4e9a8cbc330ede5588dedf56886e.lmsin.net/lifestyle/1000010259935-Yellow-Mustard-1000010259935_01-2100.jpg",
+      price: 596,
+      productName: "U.S. POLO ASSN. Men Solid Regular Fit Polo T-shirt",
+      discount: 58,
+      size: "s",
+      color: "red",
+    },
+    {
+      img: "https://lmsin.net/cdn-cgi/image/h=831,w=615,q=60,fit=cover/https://aaeff43fe32172cbcecc-ae2a4e9a8cbc330ede5588dedf56886e.lmsin.net/lifestyle/1000010434389-White-1000010434389_01-2100.jpg",
+      price: 456,
+      productName: "CODE Men Textured Regular Fit Formal Shirt",
+      discount: 78,
+      size: "s",
+      color: "red",
+    },
+    {
+      img: "https://lmsin.net/cdn-cgi/image/h=831,w=615,q=60,fit=cover/https://aaeff43fe32172cbcecc-ae2a4e9a8cbc330ede5588dedf56886e.lmsin.net/lifestyle/1000011195536-Yellow-Yellow-1000011195536_01-2100.jpg",
+      price: 785,
+      productName: "FAME FOREVER Men Striped Polo T-shirt",
+      discount: 42,
+      size: "s",
+      color: "red",
+    },
+    {
+      img: "https://lmsin.net/cdn-cgi/image/h=831,w=615,q=60,fit=cover/https://aaeff43fe32172cbcecc-ae2a4e9a8cbc330ede5588dedf56886e.lmsin.net/lifestyle/1000010640156-Green-1000010640156_01-2100.jpg",
+      price: 449,
+      productName: "PEPE JEANS Men Checked Regular Fit Casual Shirt",
+      discount: 50,
+      size: "s",
+      color: "red",
+    },
+    {
+      img: "https://lmsin.net/cdn-cgi/image/h=831,w=615,q=60,fit=cover/https://aaeff43fe32172cbcecc-ae2a4e9a8cbc330ede5588dedf56886e.lmsin.net/lifestyle/1000010653014-Black-1000010653014_01-2100.jpg",
+      price: 549,
+      productName: "PUMA Men Printed Regular Fit Crew Neck T-shirt",
+      discount: 58,
+      size: "s",
+      color: "red",
+    },
+    {
+      img: "https://lmsin.net/cdn-cgi/image/h=831,w=615,q=60,fit=cover/https://aaeff43fe32172cbcecc-ae2a4e9a8cbc330ede5588dedf56886e.lmsin.net/lifestyle/1000010229703-White-White-1000010229703_01-2100.jpg",
+      price: 845,
+      productName:
+        " INDIAN TERRAIN Men Printed Full Sleeves Slim Fit Casual Shirt",
+      discount: 99,
+      size: "s",
+      color: "red",
+    },
+    {
+      img: "https://lmsin.net/cdn-cgi/image/h=831,w=615,q=60,fit=cover/https://aaeff43fe32172cbcecc-ae2a4e9a8cbc330ede5588dedf56886e.lmsin.net/lifestyle/1000010928117-White-White-1000010928117_01-2100.jpg",
+      price: 456,
+      productName: "FREE AUTHORITY Men Printed Crew Neck T-shirt",
+      discount: 75,
+      size: "s",
+      color: "red",
+    },
+    {
+      img: "https://lmsin.net/cdn-cgi/image/h=831,w=615,q=60,fit=cover/https://aaeff43fe32172cbcecc-ae2a4e9a8cbc330ede5588dedf56886e.lmsin.net/lifestyle/1000008301238-Var7-Honey-1000008301238-Var7_02-2100.jpg",
+      price: 544,
+      productName: "FAHRENHEIT Solid Slim Fit Crew Neck T-shirts - Pack of 3",
+      discount: 58,
+      size: "s",
+      color: "red",
+    },
+    {
+      img: "https://lmsin.net/cdn-cgi/image/h=831,w=615,q=60,fit=cover/https://aaeff43fe32172cbcecc-ae2a4e9a8cbc330ede5588dedf56886e.lmsin.net/lifestyle/1000010259935-Yellow-Mustard-1000010259935_01-2100.jpg",
+      price: 596,
+      productName: "U.S. POLO ASSN. Men Solid Regular Fit Polo T-shirt",
+      discount: 58,
+      size: "s",
+      color: "red",
+    },
+    {
+      img: "https://lmsin.net/cdn-cgi/image/h=831,w=615,q=60,fit=cover/https://aaeff43fe32172cbcecc-ae2a4e9a8cbc330ede5588dedf56886e.lmsin.net/lifestyle/1000010434389-White-1000010434389_01-2100.jpg",
+      price: 456,
+      productName: "CODE Men Textured Regular Fit Formal Shirt",
+      discount: 78,
+      size: "s",
+      color: "red",
+    },
+    {
+      img: "https://lmsin.net/cdn-cgi/image/h=831,w=615,q=60,fit=cover/https://aaeff43fe32172cbcecc-ae2a4e9a8cbc330ede5588dedf56886e.lmsin.net/lifestyle/1000011195536-Yellow-Yellow-1000011195536_01-2100.jpg",
+      price: 785,
+      productName: "FAME FOREVER Men Striped Polo T-shirt",
+      discount: 42,
+      size: "s",
+      color: "red",
+    },
+    {
+      img: "https://lmsin.net/cdn-cgi/image/h=831,w=615,q=60,fit=cover/https://aaeff43fe32172cbcecc-ae2a4e9a8cbc330ede5588dedf56886e.lmsin.net/lifestyle/1000010640156-Green-1000010640156_01-2100.jpg",
+      price: 449,
+      productName: "PEPE JEANS Men Checked Regular Fit Casual Shirt",
+      discount: 50,
+      size: "s",
+      color: "red",
+    },
+    {
+      img: "https://lmsin.net/cdn-cgi/image/h=831,w=615,q=60,fit=cover/https://aaeff43fe32172cbcecc-ae2a4e9a8cbc330ede5588dedf56886e.lmsin.net/lifestyle/1000010653014-Black-1000010653014_01-2100.jpg",
+      price: 549,
+      productName: "PUMA Men Printed Regular Fit Crew Neck T-shirt",
+      discount: 58,
+      size: "s",
+      color: "red",
+    },
+    {
+      img: "https://lmsin.net/cdn-cgi/image/h=831,w=615,q=60,fit=cover/https://aaeff43fe32172cbcecc-ae2a4e9a8cbc330ede5588dedf56886e.lmsin.net/lifestyle/1000010229703-White-White-1000010229703_01-2100.jpg",
+      price: 845,
+      productName:
+        " INDIAN TERRAIN Men Printed Full Sleeves Slim Fit Casual Shirt",
+      discount: 99,
+      size: "s",
+      color: "red",
+    },
+    {
+      img: "https://lmsin.net/cdn-cgi/image/h=831,w=615,q=60,fit=cover/https://aaeff43fe32172cbcecc-ae2a4e9a8cbc330ede5588dedf56886e.lmsin.net/lifestyle/1000010928117-White-White-1000010928117_01-2100.jpg",
+      price: 456,
+      productName: "FREE AUTHORITY Men Printed Crew Neck T-shirt",
+      discount: 75,
+      size: "s",
+      color: "red",
+    },
+    {
+      img: "https://lmsin.net/cdn-cgi/image/h=831,w=615,q=60,fit=cover/https://aaeff43fe32172cbcecc-ae2a4e9a8cbc330ede5588dedf56886e.lmsin.net/lifestyle/1000008301238-Var7-Honey-1000008301238-Var7_02-2100.jpg",
+      price: 544,
+      productName: "FAHRENHEIT Solid Slim Fit Crew Neck T-shirts - Pack of 3",
+      discount: 58,
+      size: "s",
+      color: "red",
+    },
+    {
+      img: "https://lmsin.net/cdn-cgi/image/h=831,w=615,q=60,fit=cover/https://aaeff43fe32172cbcecc-ae2a4e9a8cbc330ede5588dedf56886e.lmsin.net/lifestyle/1000010259935-Yellow-Mustard-1000010259935_01-2100.jpg",
+      price: 596,
+      productName: "U.S. POLO ASSN. Men Solid Regular Fit Polo T-shirt",
+      discount: 58,
+      size: "s",
+      color: "red",
+    },
+    {
+      img: "https://lmsin.net/cdn-cgi/image/h=831,w=615,q=60,fit=cover/https://aaeff43fe32172cbcecc-ae2a4e9a8cbc330ede5588dedf56886e.lmsin.net/lifestyle/1000010434389-White-1000010434389_01-2100.jpg",
+      price: 456,
+      productName: "CODE Men Textured Regular Fit Formal Shirt",
+      discount: 78,
+      size: "s",
+      color: "red",
+    },
+    {
+      img: "https://lmsin.net/cdn-cgi/image/h=831,w=615,q=60,fit=cover/https://aaeff43fe32172cbcecc-ae2a4e9a8cbc330ede5588dedf56886e.lmsin.net/lifestyle/1000011195536-Yellow-Yellow-1000011195536_01-2100.jpg",
+      price: 785,
+      productName: "FAME FOREVER Men Striped Polo T-shirt",
+      discount: 42,
+      size: "s",
+      color: "red",
+    },
+    {
+      img: "https://lmsin.net/cdn-cgi/image/h=831,w=615,q=60,fit=cover/https://aaeff43fe32172cbcecc-ae2a4e9a8cbc330ede5588dedf56886e.lmsin.net/lifestyle/1000010640156-Green-1000010640156_01-2100.jpg",
+      price: 449,
+      productName: "PEPE JEANS Men Checked Regular Fit Casual Shirt",
+      discount: 50,
+      size: "s",
+      color: "red",
+    },
+    {
+      img: "https://lmsin.net/cdn-cgi/image/h=831,w=615,q=60,fit=cover/https://aaeff43fe32172cbcecc-ae2a4e9a8cbc330ede5588dedf56886e.lmsin.net/lifestyle/1000010653014-Black-1000010653014_01-2100.jpg",
+      price: 549,
+      productName: "PUMA Men Printed Regular Fit Crew Neck T-shirt",
+      discount: 58,
+      size: "s",
+      color: "red",
+    },
+    {
+      img: "https://lmsin.net/cdn-cgi/image/h=831,w=615,q=60,fit=cover/https://aaeff43fe32172cbcecc-ae2a4e9a8cbc330ede5588dedf56886e.lmsin.net/lifestyle/1000010229703-White-White-1000010229703_01-2100.jpg",
+      price: 845,
+      productName:
+        " INDIAN TERRAIN Men Printed Full Sleeves Slim Fit Casual Shirt",
+      discount: 99,
+      size: "s",
+      color: "red",
+    },
+    {
+      img: "https://lmsin.net/cdn-cgi/image/h=831,w=615,q=60,fit=cover/https://aaeff43fe32172cbcecc-ae2a4e9a8cbc330ede5588dedf56886e.lmsin.net/lifestyle/1000010928117-White-White-1000010928117_01-2100.jpg",
+      price: 456,
+      productName: "FREE AUTHORITY Men Printed Crew Neck T-shirt",
+      discount: 75,
+      size: "s",
+      color: "red",
+    },
+    {
+      img: "https://lmsin.net/cdn-cgi/image/h=831,w=615,q=60,fit=cover/https://aaeff43fe32172cbcecc-ae2a4e9a8cbc330ede5588dedf56886e.lmsin.net/lifestyle/1000008301238-Var7-Honey-1000008301238-Var7_02-2100.jpg",
+      price: 544,
+      productName: "FAHRENHEIT Solid Slim Fit Crew Neck T-shirts - Pack of 3",
+      discount: 58,
+      size: "s",
+      color: "red",
+    },
+    {
+      img: "https://lmsin.net/cdn-cgi/image/h=831,w=615,q=60,fit=cover/https://aaeff43fe32172cbcecc-ae2a4e9a8cbc330ede5588dedf56886e.lmsin.net/lifestyle/1000010259935-Yellow-Mustard-1000010259935_01-2100.jpg",
+      price: 596,
+      productName: "U.S. POLO ASSN. Men Solid Regular Fit Polo T-shirt",
+      discount: 58,
+      size: "s",
+      color: "red",
+    },
+    {
+      img: "https://lmsin.net/cdn-cgi/image/h=831,w=615,q=60,fit=cover/https://aaeff43fe32172cbcecc-ae2a4e9a8cbc330ede5588dedf56886e.lmsin.net/lifestyle/1000010434389-White-1000010434389_01-2100.jpg",
+      price: 456,
+      productName: "CODE Men Textured Regular Fit Formal Shirt",
+      discount: 78,
+      size: "s",
+      color: "red",
+    },
+    {
+      img: "https://lmsin.net/cdn-cgi/image/h=831,w=615,q=60,fit=cover/https://aaeff43fe32172cbcecc-ae2a4e9a8cbc330ede5588dedf56886e.lmsin.net/lifestyle/1000011195536-Yellow-Yellow-1000011195536_01-2100.jpg",
+      price: 785,
+      productName: "FAME FOREVER Men Striped Polo T-shirt",
+      discount: 42,
+      size: "s",
+      color: "red",
+    },
+  ];
+  var container = document.getElementById("container");
+  function append(data) {
+    data.forEach(function (el) {
+      let card = document.createElement("div");
+      card.setAttribute("class", "card");
+      let image = document.createElement("img");
+      image.src = el.img;
+      let btn = document.createElement("button");
+      btn.innerText = "QUICK SHOP";
+      let tag = document.createElement("p");
+      tag.setAttribute("class", "tag");
+      tag.innerText = "BEST SELLER";
+      let name = document.createElement("p");
+      name.setAttribute("class", "name");
+      name.innerText = el.productName;
+      let strikePrice = document.createElement("span");
+      strikePrice.innerText = "INR 11,688";
+      strikePrice.setAttribute("class", "strike");
+
+      let price = document.createElement("span");
+      price.innerText = `INR${el.price}`;
+      price.setAttribute("class", "price");
+
+      let discount = document.createElement("p");
+      discount.innerText = "(34% Off)";
+      discount.setAttribute("class", "discount");
+      let cartButton = document.createElement("button");
+      cartButton.innerText = "ADD TO CART";
+      cartButton.setAttribute("class", "cart");
+
+      card.append(
+        image,
+        btn,
+        tag,
+        name,
+        strikePrice,
+        price,
+        discount,
+        cartButton
+      );
+      container.append(card);
+    });
+  }
+  append(data);
+</script>
